@@ -1,8 +1,13 @@
 import Motor
+from networktables import NetworkTables
 
 
-
-
+class XboxController():
+    def __init__(self, id):
+        self.id = id
+        self.nt = NetworkTables.getTable("XboxController/{}".format(id))
+    
+    def AButton(self):
 
 
 class SpeedController():
