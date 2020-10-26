@@ -17,7 +17,7 @@ ip = "10.10.10.10" #ip address
 class main():
     def __init__(self):
         self.r = robot.MyRobot()
-        self.connected = False
+        #self.connected = False
 
         #Disabled/Auton/Teleop
         self.current_mode = ""
@@ -28,13 +28,13 @@ class main():
         NetworkTables.initialize(server=ip)
         NetworkTables.addConnectionListener(self.connectionListener, immediateNotify=True)
 
-        sd = NetworkTables.getTable("RobotMode")
-        sd.addEntryListener(self.valueChanged)
+        
 
     
     def connectionListener(self, connected, info):
         print(info, "; Connected=%s" % connected)
-        self.connected = True
+        sd = NetworkTables.getTable("RobotMode")
+        sd.addEntryListener(self.valueChanged)
 
     #Print the values changed in the network table
     def valueChanged(self, table, key, value, isNew):
