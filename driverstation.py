@@ -2,7 +2,7 @@ from networktables import NetworkTables
 import pygame, sys, time    #Imports Modules
 from pygame.locals import *
 
-def stick_stats(joystick):
+#def stick_stats(joystick):
 
 # parse command line argument
 if len(sys.argv) != 2:

@@ -8,7 +8,7 @@ class XboxController():
         self.nt = NetworkTables.getTable("XboxController/{}".format(id))
     
     def AButton(self):
-
+        pass
 
 class SpeedController():
     def __init__(self):
