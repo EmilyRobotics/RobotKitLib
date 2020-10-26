@@ -38,8 +38,6 @@ class XboxController():
         self.lastA = newA
         return released
 
-
-
 class SpeedController():
     def __init__(self):
         self.sc = Motor.Motor()
