@@ -80,11 +80,13 @@ class SpeedController():
         self.sc = Motor.Motor()
 
     def convert(self, value):
-        #input: value between -1 and 1
-        #output: value between maybe -2000, 2000?
+        #TODO: perhaps make this math a bit better, might not be needed
         return value * 2000
 
     def set(self, value):
+        """
+        Send the speed value to the motor class
+        """
         value = self.convert(value)
         self.sc.setMotorModel(value,value,value,value)
 
