@@ -16,6 +16,9 @@ ip = "10.10.10.10" #ip address
 
 class main():
     def __init__(self):
+        """
+        Construct robot disconnect, and powered on
+        """
         self.r = robot.MyRobot()
         self.connected = False
 
@@ -25,13 +28,19 @@ class main():
         
     #inital connection to networktable, check for updates
     def connect(self):
+        """
+        Connect to robot NetworkTables server
+        """
         NetworkTables.initialize(server=ip)
         NetworkTables.addConnectionListener(self.connectionListener, immediateNotify=True)
 
+        #
+        #  Need to wait here in some kind of delay loop
+        #  no point in getting the table until the connection
+        #  succeeds.    Give up after some well known time.
         sd = NetworkTables.getTable("RobotMode")
         sd.addEntryListener(self.valueChanged)
 
-    
     def connectionListener(self, connected, info):
         print(info, "; Connected=%s" % connected)
         self.connected = True
