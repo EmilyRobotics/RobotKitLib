@@ -11,32 +11,68 @@ class XboxController():
         # it has to know if the state has changed since the last
         # time...
         # get and save button state
-        self.lastA = self.nt.getBoolean('Button0')
-        self.lastB = self.nt.getBoolean('Button1')
+        
+        # A-0,B-1,X-2,Y-3
+        self.lastButtonValues = []
+        self.lastButtonValues.append(self.nt.getBoolean('Button0'))
+        self.lastButtonValues.append(self.nt.getBoolean('Button1'))
+        self.lastButtonValues.append(self.nt.getBoolean('Button2'))
+        self.lastButtonValues.append(self.nt.getBoolean('Button3'))
 
-    """
-    Here is an example of the AButton, this should be generalized
-    so that we can use the same code/logic for all of the buttons.
-    Just figure out what the function would need to look like
-    to be general, and then use the specifically named function
-    to call it.
-    """
-    def getAButton(self):
-        newA = self.nt.getBoolean('Button0')
-        self.lastA = newA
-        return newA
 
-    def getAButtonPressed(self):
-        newA = self.nt.getBoolean('Button0')
-        pressed = newA and not self.lastA
-        self.lastA = newA
+    def getButton(self, v) -> bool:
+        newB = self.nt.getBoolean('Button' + str(v))
+        self.lastButtonValues[v] = newB
+        return newB
+
+    def getButtonPressed(self, v) -> bool:
+        newB = self.nt.getBoolean('Button' + str(v))
+        pressed = newB and not self.lastButtonValues[v]
+        self.lastButtonValues[v] = newB
         return pressed
 
-    def getAButtonReleased(self):
-        newA = self.nt.getBoolean('Button0')
-        released = not newA and self.lastA
-        self.lastA = newA
+    def getButtonReleased(self, v) -> bool:
+        newB = self.nt.getBoolean('Button' + str(v))
+        released =  not newB and self.lastButtonValues[v]
+        self.lastButtonValues[v] = newB
         return released
+
+    def getAButton(self):
+        return self.getButton(0)
+
+    def getAButtonPressed(self):
+        return self.getButtonPressed(0)
+
+    def getAButtonReleased(self):
+        self.getButtonReleased(0)
+
+    def getBButton(self):
+        return self.getButton(1)
+
+    def getBButtonPressed(self):
+        return self.getButtonPressed(1)
+
+    def getBButtonReleased(self):
+        self.getButtonReleased(1)
+
+    def getXButton(self):
+        return self.getButton(2)
+
+    def getXButtonPressed(self):
+        return self.getButtonPressed(2)
+
+    def getXButtonReleased(self):
+        self.getButtonReleased(2)
+
+    def getYButton(self):
+        return self.getButton(3)
+
+    def getYButtonPressed(self):
+        return self.getButtonPressed(3)
+
+    def getYButtonReleased(self):
+        self.getButtonReleased(3)
+
 
 class SpeedController():
     def __init__(self):

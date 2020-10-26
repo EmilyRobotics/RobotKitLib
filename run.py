@@ -62,13 +62,12 @@ class main():
         time.sleep(0.02)
 
     def mainLoopThread(self):
-        while self.robotOn:
+        while self.current_mode != "Disabled":
             if self.current_mode == "Auton":
                 self.auton()
             elif self.current_mode == "Teleop":
                 self.teleop()
-            elif self.current_mode == "Disabled":
-                pass
+            
 
 
 
