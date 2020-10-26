@@ -49,7 +49,7 @@ class XboxController():
         return self.getButtonPressed(0)
 
     def getAButtonReleased(self):
-        self.getButtonReleased(0)
+        return self.getButtonReleased(0)
 
     def getBButton(self):
         return self.getButton(1)
@@ -58,7 +58,7 @@ class XboxController():
         return self.getButtonPressed(1)
 
     def getBButtonReleased(self):
-        self.getButtonReleased(1)
+        return self.getButtonReleased(1)
 
     def getXButton(self):
         return self.getButton(2)
@@ -67,7 +67,7 @@ class XboxController():
         return self.getButtonPressed(2)
 
     def getXButtonReleased(self):
-        self.getButtonReleased(2)
+        return self.getButtonReleased(2)
 
     def getYButton(self):
         return self.getButton(3)
@@ -76,9 +76,12 @@ class XboxController():
         return self.getButtonPressed(3)
 
     def getYButtonReleased(self):
-        self.getButtonReleased(3)
+        return self.getButtonReleased(3)
 
 class IllegialBuzzer():
+    """
+    1: On 0: Off
+    """
     def __init__(self):
         print("Never use this outside testing")
         GPIO.setwarnings(False)

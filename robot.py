@@ -29,6 +29,8 @@ class MyRobot():
 
         self.DEADZONE = 0.4
 
+        self.buzz = pikitlib.IllegialBuzzer()
+
         NetworkTables.initialize()
         self.driver = pikitlib.XboxController(0)
 
@@ -65,10 +67,18 @@ class MyRobot():
     def teleopPeriodic(self):
         #forward = -self.driver.getRawAxis(5) 
         #rotation_value = rotation_value = self.driver.getX(LEFT_HAND)
+        
+        # Test controller with buzzer
+
+        if self.driver.getAButtonReleased:
+            self.buzz.set(1)
+
+
+        """
         forward = 0.7
         rotation_value = 0.2
 
 
         forward = self.deadzone(forward, 0.5)
 
-        self.myRobot.arcadeDrive(forward, rotation_value)
+        self.myRobot.arcadeDrive(forward, rotation_value)"""
