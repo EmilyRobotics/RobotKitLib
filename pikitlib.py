@@ -5,9 +5,39 @@ from networktables import NetworkTables
 class XboxController():
     def __init__(self, id):
         self.id = id
-        self.nt = NetworkTables.getTable("XboxController/{}".format(id))
-    
-    def AButton(self):
+        self.nt = NetworkTables.getTable("DriverStation/XboxController{}".format(id))
+        # must initialize the state of all controls here, because
+        # if the first inquiry asks if a button was pressed, then
+        # it has to know if the state has changed since the last
+        # time...
+        # get and save button state
+        self.lastA = self.nt.getBoolean('Button0')
+        self.lastB = self.nt.getBoolean('Button1')
+
+    """
+    Here is an example of the AButton, this should be generalized
+    so that we can use the same code/logic for all of the buttons.
+    Just figure out what the function would need to look like
+    to be general, and then use the specifically named function
+    to call it.
+    """
+    def getAButton(self):
+        newA = self.nt.getBoolean('Button0')
+        self.lastA = newA
+        return newA
+
+    def getAButtonPressed(self):
+        newA = self.nt.getBoolean('Button0')
+        pressed = newA and not self.lastA
+        self.lastA = newA
+        return pressed
+
+    def getAButtonReleased(self):
+        newA = self.nt.getBoolean('Button0')
+        released = not newA and self.lastA
+        self.lastA = newA
+        return released
+
 
 
 class SpeedController():

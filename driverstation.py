@@ -2,7 +2,17 @@ from networktables import NetworkTables
 import pygame, sys, time    #Imports Modules
 from pygame.locals import *
 
-def stick_stats(joystick):
+def joystick_stats(joystick):
+    """
+    Return the number of joysticks and
+    a general stats descriptor in tuple form
+    """
+    nsticks = pygame.joystick.get_count()
+    naxes = joystick.get_numaxes()
+    nbuttons = joystick.get_numbuttons()
+
+    report = "{ sticks : {}, axes : {}, nbuttons : {} }".format(nsticks, naxes, nbuttons)
+    return nsticks, report
 
 # parse command line argument
 if len(sys.argv) != 2:
@@ -13,54 +23,48 @@ if len(sys.argv) != 2:
 ip = sys.argv[1]
 NetworkTables.initialize(ip)
 
-
 pygame.init()#Initializes Pygame
 pygame.joystick.init()
+# Assume only 1 joystick for now
 joystick = pygame.joystick.Joystick(0)
 joystick.init()#Initializes Joystick
 
-joystick_count = pygame.joystick.get_count()
-
 # save reference to table for each xbox controller
-xbc_nt = []
-for stick_idx in range(0, joystick_count):
-    xbc_nt.append(NetworkTables.getTable('XboxController/{}'.format(stick_idx)))
+xbc_nt = NetworkTables.getTable('DriverStation/XboxController0')
 
+"""
+Initially the AButton is up
+Probably we need an object that contains all of the state
+for the joystick?
+"""
 
-# This is just demo code.   Need to respond to events and update
-# the state in the networktables.
-# Nothing there yet.
-numaxes = joystick.get_numaxes()
-print("numaxes")
-print(numaxes)
-print("--------------")
-
-numbuttons = joystick.get_numbuttons()
-print("numbuttons")
-print(numbuttons)
-print("--------------")
-
+#  AButton is button[0]
 loopQuit = False
 while loopQuit == False:
 
-    # test joystick axes and prints values
-    outstr = "Axes :"
-    for i in range(0,4):
-        axis = joystick.get_axis(i)
-        outstr = outstr + str(i) + ":" + str(axis) + "|"
-        print(outstr)
+    """
+    First, let's see what we need to do about the AButton
+    Let's just read the button from the controller and publish
+    the state in NetworkTables
+    I think, instead, we could store all of the buttons in a boolean array
+    e.g. getBooleanArray().   That would takes less code. Keep in mind that pygame library might
+    return different orders for the button array, so we might need
+    to permute them based Window/Mac/Linux.
 
-    # test controller buttons
-    outstr = "Buttons: "
-    for i in range(0,numbuttons):
-           button = joystick.get_button(i)
-           outstr = outstr + str(i) + ":" + str(button) + "|"
-    print(outstr)
-
+    Look at the documentation for NetworkTables for some ideas.
+         https://robotpy.readthedocs.io/projects/pynetworktables/en/latest/examples.html
+    """
+    AButton = joystick.get_button(0)           #  get button from joystick
+    xbc_nt.putBoolean('Button0', AButton)      #  publish to NetworkTables
+    BButton = joystick.get_button(1)
+    xbc_nt.putBoolean('Button1', BButton)
+    #
+    # We can likely be more efficient by only updating the button
+    # state when there is a button event.   Until things work at all,
+    # it is not necessary.    But we should be doing it.
+    #
     for event in pygame.event.get():
-        if event.type == QUIT:
-            loopQuit = True
-        elif event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 loopQuit = True
 
