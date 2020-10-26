@@ -1,13 +1,16 @@
 import pikitlib
+import time
+from networktables import NetworkTables
+# To see messages from networktables, you must setup logging
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 
 #MOTOR PORTS
 LEFT = 1
 RIGHT = 3
 CENTER1 = 2
 CENTER2 = 4
-
-
-
 
 class MyRobot():
     def robotInit(self):
@@ -26,14 +29,27 @@ class MyRobot():
 
         self.DEADZONE = 0.4
 
-        #self.driver = wpilib.XboxController(0)
-        
+        NetworkTables.initialize()
+        self.driver = pikitlib.XboxController(0)
 
     def autonomousInit(self):
         self.myRobot.tankDrive(0.8, 0.8)
 
     def autonomousPeriodic(self):
         self.myRobot.tankDrive(1, 0.5)
+
+        buttonAPressed = self.driver.getAButtonPressed()
+        if buttonAPressed:
+            logging.debug('AButton has been pressed')
+        buttonAReleased = self.driver.getAButtonReleased()
+        if buttonAReleased:
+            logging.debug('AButton has been released')
+        buttonA = self.driver.getAButton() 
+        if buttonA:
+            logging.debug('AButton is DOWN on controller 0')
+        else:
+            logging.debug('AButton is UP on controller 0')
+    
 
     def teleopInit(self):
         """
