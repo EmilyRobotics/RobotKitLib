@@ -20,8 +20,8 @@ class main():
         self.connected = False
 
         #Disabled/Auton/Teleop
-        self.current_mode = "Disabled"
-        self.robotOn = True
+        self.current_mode = ""
+        self.disabled = True
         
     #inital connection to networktable, check for updates
     def connect(self):
@@ -41,6 +41,8 @@ class main():
         print("valueChanged: key: '%s'; value: %s; isNew: %s" % (key, value, isNew))
         if(key == "Mode"):
             self.setupMode(value)
+        if(key == "Disabled"):
+            self.disabled = value
         
     def start(self):    
         self.r.robotInit()
@@ -62,7 +64,7 @@ class main():
         time.sleep(0.02)
 
     def mainLoopThread(self):
-        while self.current_mode != "Disabled":
+        while not self.disabled:
             if self.current_mode == "Auton":
                 self.auton()
             elif self.current_mode == "Teleop":

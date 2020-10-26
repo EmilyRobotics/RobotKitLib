@@ -1,7 +1,6 @@
 import Motor
 from networktables import NetworkTables
 
-
 class XboxController():
     def __init__(self, id):
         self.id = id
@@ -37,6 +36,8 @@ class XboxController():
         self.lastButtonValues[v] = newB
         return released
 
+
+    #TODO: put these values in a variable
     def getAButton(self):
         return self.getButton(0)
 
