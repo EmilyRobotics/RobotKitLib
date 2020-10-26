@@ -12,6 +12,8 @@ logging.basicConfig(level=logging.DEBUG)
 
 ip = "10.10.10.10" #ip address
 
+
+
 class main():
     def __init__(self):
         self.r = robot.MyRobot()
@@ -19,6 +21,7 @@ class main():
 
         #Disabled/Auton/Teleop
         self.current_mode = "Disabled"
+        self.robotOn = True
         
     #inital connection to networktable, check for updates
     def connect(self):
@@ -47,7 +50,7 @@ class main():
 
         if m == "Teleop":
             self.r.teleopInit()
-        elif m == "auton":
+        elif m == "Auton":
             self.r.autonomousInit()
 
     def auton(self):
@@ -59,12 +62,13 @@ class main():
         time.sleep(0.02)
 
     def mainLoopThread(self):
-        while self.current_mode != "Disabled":
+        while self.robotOn:
             if self.current_mode == "Auton":
                 self.auton()
             elif self.current_mode == "Teleop":
                 self.teleop()
-            
+            elif self.current_mode == "Disabled":
+                pass
 
 
 
