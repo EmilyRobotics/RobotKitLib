@@ -10,8 +10,6 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-ip = "10.10.10.10" #ip address
-
 
 
 class main():
@@ -27,7 +25,7 @@ class main():
         """
         Connect to robot NetworkTables server
         """
-        NetworkTables.initialize(server=ip)
+        NetworkTables.initialize()
         NetworkTables.addConnectionListener(self.connectionListener, immediateNotify=True)
 
 
