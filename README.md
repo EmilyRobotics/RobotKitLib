@@ -1,8 +1,8 @@
-* robot.py - to robot-specific implementation of the typical FRC robot functions   (resident on Pi)
-* run.py - the wpi robot runtime that calls the entry points in robot.py  (resident on Pi)
+* robot.py - robot-specific implementation of the typical FRC robot functions   (resident on Pi)
+* run.py - the frc-like robot runtime that calls the entry points in robot.py  (resident on Pi)
 * pikitlib.py - our replacement for (but look-alike) for wpilib functions that are robot specific.   (resident on Pi and laptop)
-* driverstation.py - resident on the laptop.   Reads controls, maybe displays dashboard, sends control/commands to the robot.
-* <>.py - other files needs to be integrated into the library.     (should not really be visible at the top layer, but are there now for expediency)
+* driverstation.py - resident on the laptop.   Reads controls, maybe displays dashboard, enables/disables and sends control/commands to the robot.
+* <>.py - other files needs to be integrated into the library.     (should not really be visible at the top layer, but they are there now for expediency)
 
 
 The Freenove 4WD Raspberry Pi - based robot kit looks like a promising platform for software training.   This kits costs about $70, but requires a number of other components to be fully functional.
