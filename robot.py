@@ -6,20 +6,20 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 
-#MOTOR PORTS
-LEFT = 1
-RIGHT = 3
-CENTER1 = 2
-CENTER2 = 4
+#MOTOR CHANNEL
+FRONT_LEFT = 0
+BACK_LEFT = 2
+BACK_RIGHT = 4
+FRONT_RIGHT = 6
 
 class MyRobot():
     def robotInit(self):
         """Robot initialization function"""
         # object that handles basic drive operations
-        self.leftBackMotor = pikitlib.SpeedController()
-        self.leftFrontMotor = pikitlib.SpeedController()
-        self.rightBackMotor = pikitlib.SpeedController()
-        self.rightFrontMotor = pikitlib.SpeedController()
+        self.leftBackMotor = pikitlib.SpeedController(BACK_LEFT)
+        self.leftFrontMotor = pikitlib.SpeedController(FRONT_LEFT)
+        self.rightBackMotor = pikitlib.SpeedController(BACK_RIGHT)
+        self.rightFrontMotor = pikitlib.SpeedController(FRONT_RIGHT)
 
         self.left = pikitlib.SpeedControllerGroup(self.leftBackMotor, self.leftFrontMotor)
         self.right = pikitlib.SpeedControllerGroup(self.rightBackMotor, self.rightFrontMotor )
@@ -57,8 +57,9 @@ class MyRobot():
         """
         Configures appropriate robot settings for teleop mode
         """
-        #self.myRobot.setSafetyEnabled(True)
-
+        self.left.setInverted(True)
+        self.right.setInverted(True)
+        
     def deadzone(self, val, deadzone):
         if abs(val) < deadzone:
             return 0
@@ -68,11 +69,13 @@ class MyRobot():
         #forward = -self.driver.getRawAxis(5) 
         #rotation_value = rotation_value = self.driver.getX(LEFT_HAND)
         
-        # Test controller with buzzer
-
-        if self.driver.getAButtonReleased:
-            self.buzz.set(1)
-
+        # Test controller
+        buttonA = self.driver.getAButton()
+        print(buttonA)
+        if buttonA:
+            self.myRobot.tankDrive(0.4,0.4)
+        else:
+            self.myRobot.tankDrive(0.0,0.0)
 
         """
         forward = 0.7

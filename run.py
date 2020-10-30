@@ -10,13 +10,11 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-ip = "10.10.10.10" #ip address
-
 
 
 class main():
     def __init__(self):
-         """
+        """
         Construct robot disconnect, and powered on
         """
         self.r = robot.MyRobot()
@@ -27,7 +25,7 @@ class main():
         """
         Connect to robot NetworkTables server
         """
-        NetworkTables.initialize(server=ip)
+        NetworkTables.initialize()
         NetworkTables.addConnectionListener(self.connectionListener, immediateNotify=True)
 
 
@@ -81,6 +79,12 @@ class main():
                 self.auton()
             elif self.current_mode == "Teleop":
                 self.teleop()
+
+    def debug(self):
+        self.disabled = False
+        self.start()
+        self.setupMode("Teleop")
+        self.mainLoopThread()
             
 
 
