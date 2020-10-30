@@ -17,25 +17,25 @@ class XboxController():
         
         # A-0,B-1,X-2,Y-3
         self.lastButtonValues = []
-        self.lastButtonValues.append(self.nt.getBoolean('Button0'))
-        self.lastButtonValues.append(self.nt.getBoolean('Button1'))
-        self.lastButtonValues.append(self.nt.getBoolean('Button2'))
-        self.lastButtonValues.append(self.nt.getBoolean('Button3'))
+        self.lastButtonValues.append(self.nt.getBoolean("Button0", False))
+        self.lastButtonValues.append(self.nt.getBoolean("Button1", False))
+        self.lastButtonValues.append(self.nt.getBoolean("Button2", False))
+        self.lastButtonValues.append(self.nt.getBoolean("Button3", False))
 
 
     def getButton(self, v) -> bool:
-        newB = self.nt.getBoolean('Button' + str(v))
+        newB = self.nt.getBoolean("Button" + str(v), False)
         self.lastButtonValues[v] = newB
         return newB
 
     def getButtonPressed(self, v) -> bool:
-        newB = self.nt.getBoolean('Button' + str(v))
+        newB = self.nt.getBoolean("Button" + str(v), False)
         pressed = newB and not self.lastButtonValues[v]
         self.lastButtonValues[v] = newB
         return pressed
 
     def getButtonReleased(self, v) -> bool:
-        newB = self.nt.getBoolean('Button' + str(v))
+        newB = self.nt.getBoolean("Button" + str(v), False)
         released =  not newB and self.lastButtonValues[v]
         self.lastButtonValues[v] = newB
         return released
@@ -106,7 +106,7 @@ class SpeedController():
 
     def convert(self, value, scale=2000):
         #TODO: perhaps make this math a bit better, might not be needed
-        return value * scale
+        return int(value * scale)
 
     def set(self, value) -> None:
         """
@@ -118,10 +118,10 @@ class SpeedController():
         self.current_val = speed
         if speed > 0:
             self.motor.setMotorPwm(self.channel, 0)
-            self.motor.setMotorPwm(self.channel + 1, value)
+            self.motor.setMotorPwm(self.channel + 1, speed)
         elif speed < 0:
             self.motor.setMotorPwm(self.channel + 1, 0)
-            self.motor.setMotorPwm(self.channel, abs(value))
+            self.motor.setMotorPwm(self.channel, abs(speed))
         else:
             self.motor.setMotorPwm(self.channel, 4095)
             self.motor.setMotorPwm(self.channel + 1, 4095)

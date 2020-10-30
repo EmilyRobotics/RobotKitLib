@@ -81,6 +81,12 @@ class main():
                 self.auton()
             elif self.current_mode == "Teleop":
                 self.teleop()
+
+    def debug(self):
+        self.disabled = False
+        self.start()
+        self.setupMode("Teleop")
+        self.mainLoopThread()
             
 
 
