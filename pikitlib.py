@@ -135,6 +135,9 @@ class SpeedController():
         """
         self.isInverted = isInverted
 
+    def getInverted(self) -> bool:
+        return self.isInverted
+
 
 class SpeedControllerGroup(SpeedController):
 
@@ -154,8 +157,12 @@ class SpeedControllerGroup(SpeedController):
         """
         bool isInverted
         """
+        self.isInverted = isInverted
         for m in self.motors:
-            m.setInverted(True)
+            m.setInverted(isInverted)
+    
+    def getInverted(self) -> bool:
+        return self.isInverted
 
     def get(self):
         return self.current_speed
