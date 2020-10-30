@@ -6,11 +6,11 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 
-#MOTOR PORTS
-LEFT = 1
-RIGHT = 3
-CENTER1 = 2
-CENTER2 = 4
+#MOTOR CHANNEL
+FRONT_LEFT = 0
+BACK_LEFT = 2
+BACK_RIGHT = 4
+FRONT_RIGHT = 6
 
 class MyRobot():
     def robotInit(self):

@@ -1,7 +1,7 @@
 import Motor
 from networktables import NetworkTables
 import RPi.GPIO as GPIO
-
+from PCA9685 import PCA9685
 
 
 
@@ -97,19 +97,44 @@ class IllegialBuzzer():
 
 
 class SpeedController():
-    def __init__(self):
-        self.sc = Motor.Motor()
+    def __init__(self, channel):
+        self.motor = PCA9685(0x40, debug=True)
+        self.motor.setPWMFreq(50)
+        self.channel = channel
+        self.current_val = 0
+        self.isInverted = False
 
-    def convert(self, value):
+    def convert(self, value, scale=2000):
         #TODO: perhaps make this math a bit better, might not be needed
-        return value * 2000
+        return value * scale
 
-    def set(self, value):
+    def set(self, value) -> None:
         """
-        Send the speed value to the motor class
+        Set the motor at the specified channel to the inputed value
         """
-        value = self.convert(value)
-        self.sc.setMotorModel(value,value,value,value)
+        speed = self.convert(value)
+        if self.isInverted:
+            speed *= -1
+        self.current_val = speed
+        if speed > 0:
+            self.motor.setMotorPwm(self.channel, 0)
+            self.motor.setMotorPwm(self.channel + 1, value)
+        elif speed < 0:
+            self.motor.setMotorPwm(self.channel + 1, 0)
+            self.motor.setMotorPwm(self.channel, abs(value))
+        else:
+            self.motor.setMotorPwm(self.channel, 4095)
+            self.motor.setMotorPwm(self.channel + 1, 4095)
+
+    def get(self) -> float:
+        return self.current_val
+
+    def setInverted(self, isInverted):
+        """
+        bool isInverted
+        """
+        self.isInverted = isInverted
+
 
 class SpeedControllerGroup(SpeedController):
 
@@ -117,11 +142,23 @@ class SpeedControllerGroup(SpeedController):
         self.motors = []
         for motor in argv:
             self.motors.append(motor)
-        
+        self.current_speed = 0
+        self.isInverted = False
 
     def set(self, value):
+        self.current_speed = value
         for m in self.motors:
             m.set(value)
+
+    def setInverted(self, isInverted):
+        """
+        bool isInverted
+        """
+        for m in self.motors:
+            m.setInverted(True)
+
+    def get(self):
+        return self.current_speed
         
 class DifferentialDrive():
 
