@@ -16,7 +16,7 @@ ip = "10.10.10.10" #ip address
 
 class main():
     def __init__(self):
-         """
+        """
         Construct robot disconnect, and powered on
         """
         self.r = robot.MyRobot()
