@@ -116,6 +116,12 @@ class SpeedController():
         if self.isInverted:
             speed *= -1
         self.current_val = speed
+        self.c = self.channel
+        self.c1 = self.channel + 1
+        if value == 2:
+            self.c = self.channel + 1
+            self.c1 = self.channel - 1
+        
         if speed > 0:
             self.motor.setMotorPwm(self.channel, 0)
             self.motor.setMotorPwm(self.channel + 1, speed)
