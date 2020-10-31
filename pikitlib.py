@@ -119,7 +119,7 @@ class SpeedController():
         if self.isInverted:
             speed *= -1
         self.current_val = speed
-        if value == 2:
+        if self.channel == 2:
             speed *= -1
         
         if speed > 0:
