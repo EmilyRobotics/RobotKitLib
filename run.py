@@ -77,6 +77,7 @@ class main():
         In that loop, check for change in the robot enable/disable.
         Based on that change, call appropriate init
         Then as long as enabled and not e-stopped, call appropriate periodic function()
+        Also, sleep should be in the main loop, not in the teleop and auton methods.
         Fix this with issue #11.
         """
 
