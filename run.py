@@ -73,7 +73,13 @@ class main():
     def mainLoopThread(self):
         """
         Loop the mode function
+        Main loop should run all the time (while True:)
+        In that loop, check for change in the robot enable/disable.
+        Based on that change, call appropriate init
+        Then as long as enabled and not e-stopped, call appropriate periodic function()
+        Fix this with issue #11.
         """
+
         while not self.disabled:
             if self.current_mode == "Auton":
                 self.auton()
